@@ -1,0 +1,23 @@
+{
+  "device_config": {
+    "type": "DEVICE_SIMULATOR",
+    "conn_type": "CONN_DEMO",
+    "ios_config": {
+      "high_performance_mode": true,
+      "screen_refresh_rate": 120,
+      "enable_metal_renderer": true,
+      "buffer_size": 8192
+    },
+    "demo_config": {
+      "update_rate_hz": 60,
+      "enable_realistic_noise": true,
+      "sensor_lag_ms": 16,
+      "ios_display": {
+        "display_refresh_rate": 120,
+        "enable_animations": true,
+        "high_performance_mode": true,
+        "use_metal_renderer": true
+      }
+    }
+  }
+}

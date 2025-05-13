@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:gauges="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
+             xmlns:charts="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             x:Class="OBD2Tool.Views.RaceDashboardPage">
+
+    <Grid>
+        <!-- Night mode / High contrast overlay -->
+        <Grid.Effect>
+            <BrightnessEffect Brightness="{Binding DisplayBrightness}" />
+        </Grid.Effect>
+
+        <!-- Main Dashboard Layout -->
+        <Grid RowDefinitions="Auto,*,Auto" 
+              Padding="5"
+              BackgroundColor="{Binding DashboardBackground}">
+
+            <!-- Top Status Bar -->
+            <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto">
+                <Label Text="{Binding ConnectionStatus}"
+                       TextColor="{Binding StatusColor}"/>
+                <Label Grid.Column="1" 
+                       Text="{Binding CurrentTime}"
+                       Margin="10,0"/>
+                <Button Grid.Column="2"
+                        Text="Start Logging"
+                        Command="{Binding ToggleLoggingCommand}"
+                        BackgroundColor="{Binding LoggingButtonColor}"/>
+            </Grid>
+
+            <!-- Main Gauges Area -->
+            <ScrollView Grid.Row="1">
+                <Grid RowDefinitions="Auto,Auto,Auto" 
+                      ColumnDefinitions="*,*"
+                      Padding="10">
+                    
+                    <!-- Primary RPM Gauge -->
+                    <gauges:SfRadialGauge Grid.Row="0" 
+                                         Grid.ColumnSpan="2"
+                                         HeightRequest="250">
+                        <gauges:SfRadialGauge.Axes>
+                            <gauges:RadialAxis Minimum="0"
+                                             Maximum="{Binding MaxRPM}"
+                                             StartAngle="180"
+                                             EndAngle="360"
+                                             ShowTicks="True"
+                                             ShowLabels="True"
+                                             RadiusFactor="0.8">
+                                <gauges:RadialAxis.Pointers>
+                                    <gauges:NeedlePointer Value="{Binding CurrentRPM}"
+                                                         NeedleColor="Red"/>
+                                </gauges:RadialAxis.Pointers>
+                                <gauges:RadialAxis.Ranges>
+                                    <gauges:RadialRange StartValue="{Binding RedlineStart}"
+                                                      EndValue="{Binding MaxRPM}"
+                                                      Fill="Red"
+                                                      Opacity="0.3"/>
+                                </gauges:RadialAxis.Ranges>
+                            </gauges:RadialAxis>
+                        </gauges:SfRadialGauge.Axes>
+                    </gauges:SfRadialGauge>
+
+                    <!-- Boost Gauge -->
+                    <gauges:SfRadialGauge Grid.Row="1"
+                                         Grid.Column="0"
+                                         HeightRequest="200">
+                        <gauges:SfRadialGauge.Axes>
+                            <gauges:RadialAxis Minimum="-30"
+                                             Maximum="{Binding MaxBoost}"
+                                             StartAngle="180"
+                                             EndAngle="360">
+                                <gauges:RadialAxis.Pointers>
+                                    <gauges:NeedlePointer Value="{Binding CurrentBoost}"/>
+                                </gauges:RadialAxis.Pointers>
+                            </gauges:RadialAxis>
+                        </gauges:SfRadialGauge.Axes>
+                    </gauges:SfRadialGauge>
+
+                    <!-- AFR Gauge -->
+                    <gauges:SfRadialGauge Grid.Row="1"
+                                         Grid.Column="1"
+                                         HeightRequest="200">
+                        <gauges:SfRadialGauge.Axes>
+                            <gauges:RadialAxis Minimum="10"
+                                             Maximum="18"
+                                             StartAngle="180"
+                                             EndAngle="360">
+                                <gauges:RadialAxis.Pointers>
+                                    <gauges:NeedlePointer Value="{Binding CurrentAFR}"/>
+                                    <gauges:RangePointer Value="{Binding TargetAFR}"
+                                                        Fill="Green"
+                                                        Opacity="0.3"/>
+                                </gauges:RadialAxis.Pointers>
+                            </gauges:RadialAxis>
+                        </gauges:SfRadialGauge.Axes>
+                    </gauges:SfRadialGauge>
+
+                    <!-- Real-time Charts -->
+                    <charts:SfCartesianChart Grid.Row="2"
+                                           Grid.ColumnSpan="2"
+                                           HeightRequest="150">
+                        <charts:SfCartesianChart.XAxes>
+                            <charts:DateTimeAxis/>
+                        </charts:SfCartesianChart.XAxes>
+                        <charts:SfCartesianChart.YAxes>
+                            <charts:NumericalAxis/>
+                        </charts:SfCartesianChart.YAxes>
+                        <charts:SfCartesianChart.Series>
+                            <charts:LineSeries ItemsSource="{Binding PowerHistory}"
+                                             XBindingPath="Timestamp"
+                                             YBindingPath="Value"/>
+                        </charts:SfCartesianChart.Series>
+                    </charts:SfCartesianChart>
+
+                    <!-- Performance Grid -->
+                    <Grid Grid.Row="3" 
+                          Grid.ColumnSpan="2"
+                          RowDefinitions="Auto,Auto,Auto"
+                          ColumnDefinitions="*,*,*"
+                          Margin="0,10">
+                        
+                        <!-- Timing Info -->
+                        <VerticalStackLayout Grid.Column="0">
+                            <Label Text="0-60 Time"
+                                   FontSize="12"/>
+                            <Label Text="{Binding ZeroToSixty}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="1">
+                            <Label Text="1/8 Mile"
+                                   FontSize="12"/>
+                            <Label Text="{Binding EighthMileTime}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Column="2">
+                            <Label Text="1/4 Mile"
+                                   FontSize="12"/>
+                            <Label Text="{Binding QuarterMileTime}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+
+                        <!-- Speed Range Times -->
+                        <VerticalStackLayout Grid.Row="1">
+                            <Label Text="60-130 MPH"
+                                   FontSize="12"/>
+                            <Label Text="{Binding SixtyTo130Time}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Grid.Row="1" Grid.Column="1">
+                            <Label Text="100-150 MPH"
+                                   FontSize="12"/>
+                            <Label Text="{Binding HundredTo150Time}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+
+                        <!-- Additional Info -->
+                        <Grid Grid.Row="2"
+                              Grid.ColumnSpan="3"
+                              ColumnDefinitions="*,*,*"
+                              Margin="0,10">
+                            <Label Grid.Column="0"
+                                   Text="{Binding CurrentGear, StringFormat='Gear: {0}'}"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding CurrentSpeed, StringFormat='{0} MPH'}"/>
+                            <Label Grid.Column="2"
+                                   Text="{Binding CurrentPower, StringFormat='{0} HP'}"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </ScrollView>
+
+            <!-- Bottom Quick Actions -->
+            <Grid Grid.Row="2" 
+                  ColumnDefinitions="*,*,*,*"
+                  Margin="0,10,0,0">
+                <Button Grid.Column="0"
+                        Text="Dashboard"
+                        Command="{Binding ShowDashboardCommand}"/>
+                <Button Grid.Column="1"
+                        Text="Parameters"
+                        Command="{Binding ShowParametersCommand}"/>
+                <Button Grid.Column="2"
+                        Text="Analysis"
+                        Command="{Binding ShowAnalysisCommand}"/>
+                <Button Grid.Column="3"
+                        Text="Settings"
+                        Command="{Binding ShowSettingsCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

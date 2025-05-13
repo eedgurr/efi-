@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:vm="clr-namespace:OBD2Tool.ViewModels"
+             x:Class="OBD2Tool.Views.LogViewerPage"
+             Title="Log Viewer">
+
+    <Grid RowDefinitions="Auto,Auto,*,Auto,Auto">
+        <!-- Device and Rate Selection -->
+        <Grid Grid.Row="0" 
+              ColumnDefinitions="*,*,Auto,Auto"
+              Margin="10">
+            <Picker Grid.Column="0"
+                    Title="Select Device"
+                    ItemsSource="{Binding AvailableDevices}"
+                    SelectedItem="{Binding SelectedDevice}" />
+            
+            <Picker Grid.Column="1"
+                    Title="Logging Rate"
+                    ItemsSource="{Binding SupportedRates}"
+                    SelectedItem="{Binding SelectedLoggingRate}" />
+            
+            <Button Grid.Column="2"
+                    Text="Apply"
+                    Command="{Binding SetLoggingRateCommand}"
+                    CommandParameter="{Binding SelectedLoggingRate}"
+                    Margin="5,0" />
+            
+            <Button Grid.Column="3"
+                    Text="Load Log"
+                    Command="{Binding LoadLogCommand}" />
+        </Grid>
+
+        <!-- Playback Controls -->
+        <Grid Grid.Row="1"
+              ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto"
+              Margin="10">
+            <Button Grid.Column="0"
+                    Text="Play"
+                    Command="{Binding PlayCommand}"
+                    IsVisible="{Binding IsPlaying, Converter={StaticResource InverseBoolConverter}}" />
+            
+            <Button Grid.Column="0"
+                    Text="Pause"
+                    Command="{Binding PauseCommand}"
+                    IsVisible="{Binding IsPlaying}" />
+            
+            <Button Grid.Column="1"
+                    Text="Stop"
+                    Command="{Binding StopCommand}"
+                    Margin="5,0" />
+            
+            <Label Grid.Column="2"
+                   Text="Speed:"
+                   VerticalOptions="Center"
+                   Margin="5,0" />
+            
+            <Slider Grid.Column="3"
+                    Value="{Binding PlaybackSpeed}"
+                    Minimum="0.1"
+                    Maximum="10.0" />
+            
+            <Label Grid.Column="4"
+                   Text="{Binding PlaybackSpeed, StringFormat='{0:F1}x'}"
+                   VerticalOptions="Center" />
+            
+            <Label Grid.Column="5"
+                   Text="{Binding CurrentLogTime, StringFormat='{0:F2}s'}"
+                   VerticalOptions="Center"
+                   Margin="10,0" />
+        </Grid>
+
+        <!-- Main Content -->
+        <Grid Grid.Row="2" ColumnDefinitions="200,*">
+            <!-- Parameters List -->
+            <ScrollView Grid.Column="0">
+                <StackLayout Margin="10">
+                    <Label Text="Parameters"
+                           FontAttributes="Bold"
+                           Margin="0,0,0,10" />
+                    
+                    <CollectionView ItemsSource="{Binding VisibleParameters}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="5" ColumnDefinitions="Auto,*,Auto">
+                                    <CheckBox IsChecked="{Binding IsVisible}" />
+                                    <Label Grid.Column="1"
+                                           Text="{Binding Name}"
+                                           VerticalOptions="Center" />
+                                    <Label Grid.Column="2"
+                                           Text="{Binding CurrentValue, StringFormat='{0:F2}'}"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </ScrollView>
+
+            <!-- Graph Area -->
+            <Grid Grid.Column="1">
+                <skia:SKCanvasView x:Name="GraphCanvas"
+                                  PaintSurface="OnPaintSurface"
+                                  EnableTouchEvents="True" />
+
+                <Grid x:Name="TouchOverlay"
+                      InputTransparent="True">
+                    <BoxView Color="White"
+                            WidthRequest="1"
+                            HorizontalOptions="Start"
+                            IsVisible="{Binding IsTouching}" />
+                </Grid>
+            </Grid>
+        </Grid>
+
+        <!-- Loaded Logs -->
+        <CollectionView Grid.Row="3"
+                       ItemsSource="{Binding LoadedLogs}"
+                       HeightRequest="100"
+                       Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="5" ColumnDefinitions="*,Auto,Auto">
+                        <Label Grid.Column="0"
+                               Text="{Binding Name}"
+                               VerticalOptions="Center" />
+                        <Button Grid.Column="1"
+                                Text="Show"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LogViewerViewModel}}, Path=ShowLogCommand}"
+                                CommandParameter="{Binding .}"
+                                Margin="5,0" />
+                        <Button Grid.Column="2"
+                                Text="Remove"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LogViewerViewModel}}, Path=RemoveLogCommand}"
+                                CommandParameter="{Binding .}" />
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Debug Info -->
+        <Frame Grid.Row="4"
+               BackgroundColor="#1a1a1a"
+               Padding="10"
+               Margin="10">
+            <Label Text="{Binding DebugInfo}"
+                   TextColor="LightGray"
+                   FontFamily="Monospace" />
+        </Frame>
+    </Grid>
+</ContentPage>

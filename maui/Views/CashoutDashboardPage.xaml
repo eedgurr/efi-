@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:gauges="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
+             x:Class="OBD2Tool.Views.CashoutDashboardPage"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Header with Branding -->
+        <Grid Grid.Row="0" 
+              BackgroundColor="{DynamicResource PrimaryColor}"
+              Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0"
+                   Source="cashout_logo.png"
+                   HeightRequest="40"/>
+            
+            <Label Grid.Column="1"
+                   Text="Cashout Performance"
+                   TextColor="White"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <Grid Grid.Column="2" 
+                  ColumnDefinitions="*,*" 
+                  ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="{Binding ConnectButtonText}"
+                        Command="{Binding ConnectCommand}"
+                        BackgroundColor="{Binding IsConnected, Converter={StaticResource BoolToColorConverter}}"
+                        TextColor="White"/>
+                <Button Grid.Column="1"
+                        Text="{Binding LoggingButtonText}"
+                        Command="{Binding StartLoggingCommand}"
+                        BackgroundColor="{Binding IsLogging, Converter={StaticResource BoolToColorConverter}}"
+                        IsEnabled="{Binding IsConnected}"
+                        TextColor="White"/>
+            </Grid>
+        </Grid>
+
+        <!-- Vehicle Selection and Real-time Data -->
+        <ScrollView Grid.Row="1"
+                   Padding="20">
+            <Grid RowDefinitions="Auto,Auto,*"
+                  RowSpacing="20">
+                
+                <!-- Vehicle Selection -->
+                <Frame Grid.Row="0"
+                       BackgroundColor="{DynamicResource SecondaryColor}"
+                       BorderColor="{DynamicResource AccentColor}"
+                       Padding="15"
+                       CornerRadius="10">
+                    <Grid ColumnDefinitions="Auto,*,Auto"
+                          ColumnSpacing="15">
+                        <Label Text="Vehicle Type"
+                               FontSize="18"
+                               VerticalOptions="Center"
+                               TextColor="White"/>
+                        <Picker Grid.Column="1"
+                                ItemsSource="{Binding VehicleTypes}"
+                                SelectedItem="{Binding SelectedVehicleType}"
+                                Title="Select Vehicle"
+                                TextColor="White"
+                                BackgroundColor="{DynamicResource SecondaryColor}"/>
+                        <Button Grid.Column="2"
+                                Text="Load Profile"
+                                Command="{Binding LoadProfileCommand}"
+                                BackgroundColor="{DynamicResource AccentColor}"/>
+                    </Grid>
+                </Frame>
+
+                <!-- Primary Parameters -->
+                <Frame Grid.Row="1"
+                       BackgroundColor="{DynamicResource SecondaryColor}"
+                       BorderColor="{DynamicResource AccentColor}"
+                       Padding="15"
+                       CornerRadius="10">
+                    <Grid RowDefinitions="Auto,Auto">
+                        <!-- Main Gauges -->
+                        <Grid ColumnDefinitions="*,*"
+                              ColumnSpacing="20">
+                            <!-- RPM Gauge -->
+                            <gauges:SfRadialGauge Grid.Column="0" 
+                                                 HeightRequest="200">
+                                <gauges:SfRadialGauge.Axes>
+                                    <gauges:RadialAxis Minimum="0" 
+                                                     Maximum="{Binding MaxRPM}"
+                                                     Interval="1000"
+                                                     StartAngle="135"
+                                                     EndAngle="45"
+                                                     ShowTicks="True"
+                                                     ShowLabels="True"
+                                                     LabelTextColor="White">
+                                        <gauges:RadialAxis.Ranges>
+                                            <gauges:RadialRange StartValue="{Binding RedlineStart}"
+                                                              EndValue="{Binding MaxRPM}"
+                                                              Fill="Red"
+                                                              Opacity="0.3"/>
+                                        </gauges:RadialAxis.Ranges>
+                                        <gauges:RadialAxis.Pointers>
+                                            <gauges:NeedlePointer Value="{Binding CurrentRPM}"
+                                                               NeedleColor="{DynamicResource AccentColor}"
+                                                               KnobColor="{DynamicResource AccentColor}"/>
+                                        </gauges:RadialAxis.Pointers>
+                                        <gauges:RadialAxis.Annotations>
+                                            <gauges:GaugeAnnotation>
+                                                <gauges:GaugeAnnotation.Content>
+                                                    <VerticalStackLayout HorizontalOptions="Center">
+                                                        <Label Text="RPM"
+                                                               TextColor="White"
+                                                               FontSize="16"
+                                                               HorizontalOptions="Center"/>
+                                                        <Label Text="{Binding CurrentRPM, StringFormat='{0:N0}'}"
+                                                               TextColor="{DynamicResource AccentColor}"
+                                                               FontSize="22"
+                                                               FontAttributes="Bold"
+                                                               HorizontalOptions="Center"/>
+                                                    </VerticalStackLayout>
+                                                </gauges:GaugeAnnotation.Content>
+                                            </gauges:GaugeAnnotation>
+                                        </gauges:RadialAxis.Annotations>
+                                    </gauges:RadialAxis>
+                                </gauges:SfRadialGauge.Axes>
+                            </gauges:SfRadialGauge>
+
+                            <!-- Boost Gauge -->
+                            <gauges:SfRadialGauge Grid.Column="1"
+                                                 HeightRequest="200">
+                                <gauges:SfRadialGauge.Axes>
+                                    <gauges:RadialAxis Minimum="-15"
+                                                     Maximum="{Binding MaxBoost}"
+                                                     Interval="5"
+                                                     StartAngle="135"
+                                                     EndAngle="45"
+                                                     ShowTicks="True"
+                                                     ShowLabels="True"
+                                                     LabelTextColor="White">
+                                        <gauges:RadialAxis.Ranges>
+                                            <gauges:RadialRange StartValue="{Binding SafeBoostLimit}"
+                                                              EndValue="{Binding MaxBoost}"
+                                                              Fill="Red"
+                                                              Opacity="0.3"/>
+                                        </gauges:RadialAxis.Ranges>
+                                        <gauges:RadialAxis.Pointers>
+                                            <gauges:NeedlePointer Value="{Binding CurrentBoost}"
+                                                               NeedleColor="{DynamicResource AccentColor}"
+                                                               KnobColor="{DynamicResource AccentColor}"/>
+                                        </gauges:RadialAxis.Pointers>
+                                        <gauges:RadialAxis.Annotations>
+                                            <gauges:GaugeAnnotation>
+                                                <gauges:GaugeAnnotation.Content>
+                                                    <VerticalStackLayout HorizontalOptions="Center">
+                                                        <Label Text="BOOST"
+                                                               TextColor="White"
+                                                               FontSize="16"
+                                                               HorizontalOptions="Center"/>
+                                                        <Label Text="{Binding CurrentBoost, StringFormat='{0:F1} PSI'}"
+                                                               TextColor="{DynamicResource AccentColor}"
+                                                               FontSize="22"
+                                                               FontAttributes="Bold"
+                                                               HorizontalOptions="Center"/>
+                                                    </VerticalStackLayout>
+                                                </gauges:GaugeAnnotation.Content>
+                                            </gauges:GaugeAnnotation>
+                                        </gauges:RadialAxis.Annotations>
+                                    </gauges:RadialAxis>
+                                </gauges:SfRadialGauge.Axes>
+                            </gauges:SfRadialGauge>
+                        </Grid>
+
+                        <!-- Key Parameters Grid -->
+                        <Grid Grid.Row="1"
+                              Margin="0,20,0,0"
+                              ColumnDefinitions="*,*,*"
+                              RowDefinitions="Auto,Auto,Auto"
+                              RowSpacing="10"
+                              ColumnSpacing="10">
+                            
+                            <!-- AFR -->
+                            <Frame Grid.Row="0" Grid.Column="0"
+                                   BackgroundColor="Transparent"
+                                   BorderColor="{DynamicResource SecondaryColor}">
+                                <VerticalStackLayout>
+                                    <Label Text="AFR"
+                                           TextColor="White"
+                                           FontSize="14"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding CurrentAFR, StringFormat='{0:F1}'}"
+                                           TextColor="{DynamicResource AccentColor}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Oil Temp -->
+                            <Frame Grid.Row="0" Grid.Column="1"
+                                   BackgroundColor="Transparent"
+                                   BorderColor="{DynamicResource SecondaryColor}">
+                                <VerticalStackLayout>
+                                    <Label Text="Oil Temp"
+                                           TextColor="White"
+                                           FontSize="14"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding OilTemp, StringFormat='{0:F0}°F'}"
+                                           TextColor="{DynamicResource AccentColor}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Coolant Temp -->
+                            <Frame Grid.Row="0" Grid.Column="2"
+                                   BackgroundColor="Transparent"
+                                   BorderColor="{DynamicResource SecondaryColor}">
+                                <VerticalStackLayout>
+                                    <Label Text="Coolant"
+                                           TextColor="White"
+                                           FontSize="14"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding CoolantTemp, StringFormat='{0:F0}°F'}"
+                                           TextColor="{DynamicResource AccentColor}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Timing -->
+                            <Frame Grid.Row="1" Grid.Column="0"
+                                   BackgroundColor="Transparent"
+                                   BorderColor="{DynamicResource SecondaryColor}">
+                                <VerticalStackLayout>
+                                    <Label Text="Timing"
+                                           TextColor="White"
+                                           FontSize="14"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding TimingAdvance, StringFormat='{0:F1}°'}"
+                                           TextColor="{DynamicResource AccentColor}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+
+                            <!-- Vehicle Specific Parameter -->
+                            <Frame Grid.Row="1" Grid.Column="1"
+                                   Grid.ColumnSpan="2"
+                                   BackgroundColor="Transparent"
+                                   BorderColor="{DynamicResource SecondaryColor}">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding SpecialParamName}"
+                                           TextColor="White"
+                                           FontSize="14"
+                                           HorizontalOptions="Center"/>
+                                    <Label Text="{Binding SpecialParamValue}"
+                                           TextColor="{DynamicResource AccentColor}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Center"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </Grid>
+                </Frame>
+
+                <!-- Logging Controls -->
+                <Frame Grid.Row="2"
+                       BackgroundColor="{DynamicResource SecondaryColor}"
+                       BorderColor="{DynamicResource AccentColor}"
+                       Padding="15"
+                       CornerRadius="10">
+                    <Grid ColumnDefinitions="*,*"
+                          ColumnSpacing="15">
+                        <Button Grid.Column="0"
+                                Text="View Logs"
+                                Command="{Binding ViewLogsCommand}"/>
+                        <Button Grid.Column="1"
+                                Text="Settings"
+                                Command="{Binding ShowSettingsCommand}"/>
+                    </Grid>
+                </Frame>
+            </Grid>
+        </ScrollView>
+
+        <!-- Status Bar -->
+        <Grid Grid.Row="2"
+              BackgroundColor="{DynamicResource PrimaryColor}"
+              Padding="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="{Binding StatusMessage}"
+                   TextColor="White"/>
+            
+            <Label Grid.Column="1"
+                   Text="{Binding LoggingRate, StringFormat='{0}Hz'}"
+                   TextColor="{DynamicResource AccentColor}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

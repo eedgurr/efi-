@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:charts="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+             x:Class="OBD2Tool.Views.ParameterMonitorPage">
+
+    <Grid RowDefinitions="Auto,*">
+        <!-- Parameter Groups -->
+        <ScrollView Grid.Row="0" Orientation="Horizontal">
+            <HorizontalStackLayout Spacing="10" Padding="10">
+                <Button Text="Engine"
+                        Command="{Binding SelectGroupCommand}"
+                        CommandParameter="Engine"/>
+                <Button Text="Transmission"
+                        Command="{Binding SelectGroupCommand}"
+                        CommandParameter="Transmission"/>
+                <Button Text="Boost"
+                        Command="{Binding SelectGroupCommand}"
+                        CommandParameter="Boost"/>
+                <Button Text="Air/Fuel"
+                        Command="{Binding SelectGroupCommand}"
+                        CommandParameter="AirFuel"/>
+                <Button Text="Temperatures"
+                        Command="{Binding SelectGroupCommand}"
+                        CommandParameter="Temperatures"/>
+                <Button Text="Sensors"
+                        Command="{Binding SelectGroupCommand}"
+                        CommandParameter="Sensors"/>
+                <Button Text="Custom"
+                        Command="{Binding SelectGroupCommand}"
+                        CommandParameter="Custom"/>
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- Parameter Display Area -->
+        <ScrollView Grid.Row="1">
+            <Grid RowDefinitions="Auto,*" Padding="10">
+                <!-- Quick Stats -->
+                <Grid ColumnDefinitions="*,*,*" 
+                      RowDefinitions="Auto,Auto"
+                      Margin="0,0,0,10">
+                    
+                    <Frame Grid.Column="0" Padding="10">
+                        <VerticalStackLayout>
+                            <Label Text="Power"/>
+                            <Label Text="{Binding CurrentPower, StringFormat='{0:F1} HP'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Column="1" Padding="10">
+                        <VerticalStackLayout>
+                            <Label Text="Torque"/>
+                            <Label Text="{Binding CurrentTorque, StringFormat='{0:F1} lb-ft'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Grid.Column="2" Padding="10">
+                        <VerticalStackLayout>
+                            <Label Text="Boost"/>
+                            <Label Text="{Binding CurrentBoost, StringFormat='{0:F1} PSI'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Parameter Grid -->
+                    <CollectionView Grid.Row="1"
+                                  Grid.ColumnSpan="3"
+                                  ItemsSource="{Binding VisibleParameters}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame Margin="5" Padding="10">
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Name}"
+                                                   FontAttributes="Bold"/>
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="12"
+                                                   TextColor="Gray"/>
+                                        </VerticalStackLayout>
+                                        <VerticalStackLayout Grid.Column="1">
+                                            <Label Text="{Binding Value, StringFormat='{0:F2}'}"
+                                                   FontSize="20"
+                                                   FontAttributes="Bold"/>
+                                            <Label Text="{Binding Unit}"
+                                                   FontSize="12"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+
+                <!-- Real-time Graph -->
+                <charts:SfCartesianChart Grid.Row="1" 
+                                       HeightRequest="200"
+                                       Margin="0,10">
+                    <charts:SfCartesianChart.XAxes>
+                        <charts:DateTimeAxis/>
+                    </charts:SfCartesianChart.XAxes>
+                    <charts:SfCartesianChart.YAxes>
+                        <charts:NumericalAxis/>
+                    </charts:SfCartesianChart.YAxes>
+                    <charts:SfCartesianChart.Series>
+                        <charts:LineSeries ItemsSource="{Binding SelectedParameterHistory}"
+                                         XBindingPath="Timestamp"
+                                         YBindingPath="Value"/>
+                    </charts:SfCartesianChart.Series>
+                </charts:SfCartesianChart>
+            </Grid>
+        </ScrollView>
+
+        <!-- Parameter Selection Popup -->
+        <Grid x:Name="ParameterSelectionPopup"
+              IsVisible="{Binding IsSelectingParameters}"
+              BackgroundColor="#80000000"
+              Grid.RowSpan="2">
+            <Frame Margin="20"
+                   VerticalOptions="Center">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <Label Text="Select Parameters"
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+                    
+                    <ScrollView Grid.Row="1">
+                        <CollectionView ItemsSource="{Binding AllParameters}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10"
+                                          ColumnDefinitions="Auto,*">
+                                        <CheckBox IsChecked="{Binding IsSelected}"/>
+                                        <VerticalStackLayout Grid.Column="1">
+                                            <Label Text="{Binding Name}"
+                                                   FontAttributes="Bold"/>
+                                            <Label Text="{Binding Description}"
+                                                   FontSize="12"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </ScrollView>
+
+                    <Button Grid.Row="2"
+                            Text="Done"
+                            Command="{Binding CloseParameterSelectionCommand}"/>
+                </Grid>
+            </Frame>
+        </Grid>
+    </Grid>
+</ContentPage>

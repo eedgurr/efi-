@@ -1,0 +1,89 @@
+/begin PROJECT OBD2_Logger
+  /begin MODULE Logger "OBD2 Data Logger Configuration"
+    
+    /begin MEASUREMENT RPM "Engine Speed"
+      UBYTE
+      NO_CONVERSION
+      0 8000
+      SAMPLED 20
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT SPEED "Vehicle Speed"
+      UBYTE
+      NO_CONVERSION
+      0 255
+      SAMPLED 10
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT ACCEL_X "Lateral Acceleration"
+      FLOAT32
+      NO_CONVERSION
+      -2 2
+      SAMPLED 100
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT ACCEL_Y "Longitudinal Acceleration"
+      FLOAT32
+      NO_CONVERSION
+      -2 2
+      SAMPLED 100
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT ACCEL_Z "Vertical Acceleration"
+      FLOAT32
+      NO_CONVERSION
+      -2 2
+      SAMPLED 100
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT GPS_LAT "GPS Latitude"
+      FLOAT32
+      NO_CONVERSION
+      -90 90
+      SAMPLED 5
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT GPS_LON "GPS Longitude"
+      FLOAT32
+      NO_CONVERSION
+      -180 180
+      SAMPLED 5
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT GPS_SPEED "GPS Speed"
+      FLOAT32
+      NO_CONVERSION
+      0 255
+      SAMPLED 5
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT BOOST "Boost Pressure"
+      FLOAT32
+      NO_CONVERSION
+      -14.7 30
+      SAMPLED 20
+    /end MEASUREMENT
+    
+    /begin MEASUREMENT AFR "Air Fuel Ratio"
+      FLOAT32
+      NO_CONVERSION
+      10 20
+      SAMPLED 20
+    /end MEASUREMENT
+    
+    /begin CHARACTERISTIC SAMPLE_RATES "Sensor Sample Rates"
+      VALUE
+      0
+      UBYTE
+      MIN_REFRESH 0
+      MAX_REFRESH 1000
+      /begin AXIS_DESCR
+        STANDARD_AXIS
+        UBYTE
+        3
+        0 2 "OBD" "ACCEL" "GPS"
+      /end AXIS_DESCR
+    /end CHARACTERISTIC
+    
+  /end MODULE
+/end PROJECT

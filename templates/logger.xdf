@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XDFFORMAT version="1.0">
+  <HEADER>
+    <PROTOCOL>OBD2</PROTOCOL>
+    <VERSION>1.0</VERSION>
+    <TIMESTAMP>$TIMESTAMP</TIMESTAMP>
+    <VEHICLE>2014 Mustang GT</VEHICLE>
+  </HEADER>
+  
+  <MEASUREMENTS>
+    <!-- OBD2 Parameters -->
+    <MEASUREMENT name="RPM">
+      <DATATYPE>UINT16</DATATYPE>
+      <UNIT>rpm</UNIT>
+      <MIN>0</MIN>
+      <MAX>8000</MAX>
+      <SAMPLERATE>20</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <MEASUREMENT name="SPEED">
+      <DATATYPE>UINT8</DATATYPE>
+      <UNIT>mph</UNIT>
+      <MIN>0</MIN>
+      <MAX>255</MAX>
+      <SAMPLERATE>10</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <!-- Accelerometer Data -->
+    <MEASUREMENT name="ACCEL_X">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>g</UNIT>
+      <MIN>-2</MIN>
+      <MAX>2</MAX>
+      <SAMPLERATE>100</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <MEASUREMENT name="ACCEL_Y">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>g</UNIT>
+      <MIN>-2</MIN>
+      <MAX>2</MAX>
+      <SAMPLERATE>100</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <MEASUREMENT name="ACCEL_Z">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>g</UNIT>
+      <MIN>-2</MIN>
+      <MAX>2</MAX>
+      <SAMPLERATE>100</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <!-- GPS Data -->
+    <MEASUREMENT name="GPS_LAT">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>deg</UNIT>
+      <MIN>-90</MIN>
+      <MAX>90</MAX>
+      <SAMPLERATE>5</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <MEASUREMENT name="GPS_LON">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>deg</UNIT>
+      <MIN>-180</MIN>
+      <MAX>180</MAX>
+      <SAMPLERATE>5</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <MEASUREMENT name="GPS_SPEED">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>mph</UNIT>
+      <MIN>0</MIN>
+      <MAX>255</MAX>
+      <SAMPLERATE>5</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <!-- Performance Metrics -->
+    <MEASUREMENT name="BOOST">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>psi</UNIT>
+      <MIN>-14.7</MIN>
+      <MAX>30</MAX>
+      <SAMPLERATE>20</SAMPLERATE>
+    </MEASUREMENT>
+    
+    <MEASUREMENT name="AFR">
+      <DATATYPE>FLOAT</DATATYPE>
+      <UNIT>ratio</UNIT>
+      <MIN>10</MIN>
+      <MAX>20</MAX>
+      <SAMPLERATE>20</SAMPLERATE>
+    </MEASUREMENT>
+  </MEASUREMENTS>
+  
+  <LOGGING>
+    <BUFFERSIZE>1024</BUFFERSIZE>
+    <COMPRESSION>true</COMPRESSION>
+    <TRIGGERMODE>CONTINUOUS</TRIGGERMODE>
+  </LOGGING>
+</XDFFORMAT>

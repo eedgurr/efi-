@@ -1,0 +1,62 @@
+{
+    "device_config": {
+        "type": "DEVICE_SIMULATOR",
+        "conn_type": "CONN_DEMO",
+        "sample_rates": {
+            "accelerometer_hz": 100,
+            "gps_hz": 5,
+            "obd_hz": 20
+        },
+        "gps_config": {
+            "enabled": true,
+            "min_accuracy": 3,
+            "update_interval": 200,
+            "high_precision_mode": true
+        },
+        "accel_config": {
+            "enabled": true,
+            "sample_rate": 100,
+            "sensitivity": 1.0,
+            "high_g_mode": true,
+            "filter_level": 128
+        },
+        "log_format": {
+            "enable_xdf": true,
+            "enable_a2l": true,
+            "xdf_template": "templates/logger.xdf",
+            "a2l_file": "templates/logger.a2l",
+            "log_config": {
+                "buffer_size": 1024,
+                "compression": true,
+                "output_dir": "logs"
+            }
+        },
+        "demo": {
+            "enable_realistic_noise": true,
+            "update_rate_hz": 60,
+            "sensor_lag_ms": 5,
+            "simulate_connection_issues": false,
+            "ios_display": {
+                "display_refresh_rate": 120,
+                "enable_animations": true,
+                "high_performance_mode": true,
+                "use_metal_renderer": true
+            }
+        }
+    },
+    "vehicle_config": {
+        "make": "Ford",
+        "model": "Mustang GT",
+        "year": 2014,
+        "engine": "5.0L V8",
+        "transmission": "6-speed Manual",
+        "weight": 3700,
+        "performance": {
+            "max_hp": 420,
+            "max_torque": 390,
+            "redline": 7000,
+            "max_boost": 25,
+            "gear_ratios": [3.66, 2.43, 1.69, 1.32, 1.00, 0.65]
+        }
+    }
+}

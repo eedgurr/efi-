@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:OBD2Tool.ViewModels"
+             x:Class="OBD2Tool.Views.EngineHealthPage"
+             x:DataType="viewmodel:EngineHealthViewModel">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*,Auto" Padding="20">
+            <!-- Header -->
+            <VerticalStackLayout Grid.Row="0" Spacing="10">
+                <Label Text="Engine Health Monitor"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                    <Entry Placeholder="Session Description"
+                           Text="{Binding SessionDescription}"/>
+                    <Button Grid.Column="1"
+                            Text="{Binding IsLogging, Converter={StaticResource BoolToStartStopConverter}}"
+                            Command="{Binding ToggleLoggingCommand}"
+                            BackgroundColor="{Binding IsLogging, Converter={StaticResource BoolToColorConverter}}"/>
+                </Grid>
+            </VerticalStackLayout>
+
+            <!-- Real-time Metrics -->
+            <Grid Grid.Row="1" 
+                  RowDefinitions="Auto,*"
+                  ColumnDefinitions="*,*"
+                  Margin="0,20">
+                
+                <!-- Metrics Cards -->
+                <Border Grid.Row="0" Grid.Column="0"
+                        Stroke="{StaticResource Primary}"
+                        StrokeThickness="1"
+                        Margin="5">
+                    <Grid RowDefinitions="Auto,*" Padding="10">
+                        <Label Text="Fuel System"
+                               FontSize="16"
+                               FontAttributes="Bold"/>
+                        <VerticalStackLayout Grid.Row="1" Spacing="5">
+                            <Label Text="{Binding ShortTermFuelTrim, StringFormat='Short Term: {0:F1}%'}"/>
+                            <Label Text="{Binding LongTermFuelTrim, StringFormat='Long Term: {0:F1}%'}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="0" Grid.Column="1"
+                        Stroke="{StaticResource Primary}"
+                        StrokeThickness="1"
+                        Margin="5">
+                    <Grid RowDefinitions="Auto,*" Padding="10">
+                        <Label Text="Engine Efficiency"
+                               FontSize="16"
+                               FontAttributes="Bold"/>
+                        <VerticalStackLayout Grid.Row="1" Spacing="5">
+                            <Label Text="{Binding VolumetricEfficiency, StringFormat='VE: {0:F1}%'}"/>
+                            <Label Text="{Binding CombustionEfficiency, StringFormat='CE: {0:F1}%'}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Efficiency History Chart -->
+                <GraphicsView Grid.Row="1" Grid.ColumnSpan="2"
+                             Margin="0,20"
+                             DrawableSource="{Binding EfficiencyHistory}"
+                             HeightRequest="200"/>
+            </Grid>
+
+            <!-- Session List -->
+            <VerticalStackLayout Grid.Row="2" Spacing="10">
+                <Label Text="Recorded Sessions"
+                       FontSize="20"
+                       FontAttributes="Bold"/>
+                
+                <Picker Title="Export Format"
+                        SelectedItem="{Binding SelectedLogFormat}">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>xdf</x:String>
+                            <x:String>a2l</x:String>
+                            <x:String>csv</x:String>
+                            <x:String>json</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+                <CollectionView ItemsSource="{Binding Sessions}"
+                              HeightRequest="200">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:LogSession">
+                            <Grid ColumnDefinitions="*,Auto,Auto"
+                                  Padding="10">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Description}"
+                                           FontAttributes="Bold"/>
+                                    <Label Text="{Binding Timestamp, StringFormat='{0:g}'}"
+                                           FontSize="12"
+                                           TextColor="{StaticResource Gray500}"/>
+                                </VerticalStackLayout>
+                                
+                                <Button Grid.Column="1"
+                                        Text="Export"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:EngineHealthViewModel}}, Path=ExportSessionCommand}"
+                                        CommandParameter="{Binding}"/>
+                                
+                                <Button Grid.Column="2"
+                                        Text="Compare"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:EngineHealthViewModel}}, Path=CompareSessionCommand}"
+                                        CommandParameter="{Binding}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

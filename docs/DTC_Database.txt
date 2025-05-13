@@ -1,0 +1,55 @@
+# Diagnostic Trouble Codes (DTC) Reference
+# Format: CODE|DESCRIPTION|SEVERITY(1-5)|SYSTEM
+
+# Powertrain Codes (P0xxx)
+P0100|Mass or Volume Air Flow Circuit Malfunction|3|Engine Air Intake
+P0101|Mass or Volume Air Flow Circuit Range/Performance Problem|3|Engine Air Intake
+P0102|Mass or Volume Air Flow Circuit Low Input|3|Engine Air Intake
+P0103|Mass or Volume Air Flow Circuit High Input|3|Engine Air Intake
+P0104|Mass or Volume Air Flow Circuit Intermittent|2|Engine Air Intake
+
+P0110|Intake Air Temperature Circuit Malfunction|2|Engine Air Intake
+P0111|Intake Air Temperature Circuit Range/Performance Problem|2|Engine Air Intake
+P0112|Intake Air Temperature Circuit Low Input|2|Engine Air Intake
+P0113|Intake Air Temperature Circuit High Input|2|Engine Air Intake
+
+P0120|Throttle/Pedal Position Sensor/Switch A Circuit Malfunction|4|Engine Controls
+P0121|Throttle/Pedal Position Sensor/Switch A Circuit Range/Performance Problem|4|Engine Controls
+P0122|Throttle/Pedal Position Sensor/Switch A Circuit Low Input|4|Engine Controls
+P0123|Throttle/Pedal Position Sensor/Switch A Circuit High Input|4|Engine Controls
+
+P0171|System Too Lean (Bank 1)|3|Fuel System
+P0172|System Too Rich (Bank 1)|3|Fuel System
+P0173|Fuel Trim Malfunction (Bank 2)|3|Fuel System
+P0174|System Too Lean (Bank 2)|3|Fuel System
+
+P0300|Random/Multiple Cylinder Misfire Detected|4|Engine
+P0301|Cylinder 1 Misfire Detected|4|Engine
+P0302|Cylinder 2 Misfire Detected|4|Engine
+P0303|Cylinder 3 Misfire Detected|4|Engine
+P0304|Cylinder 4 Misfire Detected|4|Engine
+
+# Chassis Codes (C0xxx)
+C0031|Left Front Wheel Speed Circuit Range/Performance|3|ABS
+C0032|Left Front Wheel Speed Circuit Input|3|ABS
+C0033|Right Front Wheel Speed Circuit Range/Performance|3|ABS
+C0034|Right Front Wheel Speed Circuit Input|3|ABS
+
+# Body Codes (B0xxx)
+B0001|Driver Airbag Circuit Open|5|Safety Systems
+B0002|Driver Airbag Circuit Short to Ground|5|Safety Systems
+B0003|Driver Airbag Circuit Short to Battery|5|Safety Systems
+B0010|Passenger Airbag Circuit Open|5|Safety Systems
+
+# Network Codes (U0xxx)
+U0001|High Speed CAN Communication Bus|4|Network
+U0002|High Speed CAN Communication Bus Performance|4|Network
+U0003|High Speed CAN Communication Bus (+) Open|4|Network
+U0004|High Speed CAN Communication Bus (+) Low|4|Network
+
+# Severity Levels:
+# 1 - Information only
+# 2 - Minor issue
+# 3 - Moderate issue
+# 4 - Serious issue
+# 5 - Critical issue

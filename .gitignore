@@ -1,0 +1,50 @@
+# Build directories
+bin/
+obj/
+build/
+Debug/
+Release/
+
+# IDE specific files
+*.user
+*.suo
+*.userprefs
+*.sdf
+*.opensdf
+*.vcxproj.user
+.vs/
+.vscode/
+*.sublime-workspace
+
+# Compiled files
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.app
+
+# Dependency directories
+node_modules/
+packages/
+
+# Generated files
+*.log
+*.cache
+Makefile.Debug
+Makefile.Release
+moc_*.cpp
+qrc_*.cpp
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Application specific
+*.cfg.backup
+*.dbc.backup
+*.log.*
+temp/

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:OBD2Tool.ViewModels"
+             x:Class="OBD2Tool.Views.EngineHealthComparisonPage">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,*" Padding="20">
+            <!-- Header -->
+            <VerticalStackLayout Grid.Row="0" Spacing="10">
+                <Label Text="Engine Health Comparison"
+                       FontSize="24"
+                       FontAttributes="Bold"/>
+                <Label Text="{Binding ComparisonDescription}"
+                       FontSize="16"/>
+            </VerticalStackLayout>
+
+            <!-- Comparison Content -->
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,*">
+                <!-- Fuel System Changes -->
+                <Border Grid.Row="0"
+                        Stroke="{StaticResource Primary}"
+                        StrokeThickness="1"
+                        Margin="0,10">
+                    <Grid RowDefinitions="Auto,*" Padding="15">
+                        <Label Text="Fuel System Analysis"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <VerticalStackLayout Grid.Row="1" Spacing="10">
+                            <Label Text="{Binding FuelTrimDelta, StringFormat='Fuel Trim Change: {0}%'}"
+                                   TextColor="{Binding FuelTrimDelta, Converter={StaticResource ValueToColorConverter}}"/>
+                            <Label Text="{Binding FuelSystemHealth}"
+                                   TextColor="{Binding FuelSystemHealthColor}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Efficiency Changes -->
+                <Border Grid.Row="1"
+                        Stroke="{StaticResource Primary}"
+                        StrokeThickness="1"
+                        Margin="0,10">
+                    <Grid RowDefinitions="Auto,*" Padding="15">
+                        <Label Text="Efficiency Analysis"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <VerticalStackLayout Grid.Row="1" Spacing="10">
+                            <Label Text="{Binding EfficiencyChange, StringFormat='Efficiency Change: {0}%'}"
+                                   TextColor="{Binding EfficiencyChange, Converter={StaticResource ValueToColorConverter}}"/>
+                            <Label Text="{Binding EfficiencyAnalysis}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Engine Performance -->
+                <Border Grid.Row="2"
+                        Stroke="{StaticResource Primary}"
+                        StrokeThickness="1"
+                        Margin="0,10">
+                    <Grid RowDefinitions="Auto,*" Padding="15">
+                        <Label Text="Performance Analysis"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <VerticalStackLayout Grid.Row="1" Spacing="10">
+                            <Label Text="{Binding KnockTrend}"/>
+                            <Label Text="{Binding TimingVariation}"/>
+                            <Label Text="{Binding TemperatureTrends}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </Border>
+
+                <!-- Recommendations -->
+                <Border Grid.Row="3"
+                        Stroke="{StaticResource Primary}"
+                        StrokeThickness="1"
+                        Margin="0,10">
+                    <Grid RowDefinitions="Auto,*" Padding="15">
+                        <Label Text="Recommendations"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <CollectionView Grid.Row="1"
+                                      ItemsSource="{Binding RecommendedActions}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="0,5">
+                                        <Label Text="{Binding .}"
+                                               TextColor="{StaticResource Primary}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+    </ScrollView>
+
+</ContentPage>

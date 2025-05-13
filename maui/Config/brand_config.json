@@ -1,0 +1,83 @@
+{
+    "brandingConfig": {
+        "businessName": "Cashout Performance",
+        "primaryColor": "#FF5722",
+        "secondaryColor": "#212121",
+        "accentColor": "#FFC107",
+        "logoPath": "assets/cashout_performance_logo.png"
+    },
+    "vehicleProfiles": {
+        "mustang": {
+            "name": "Ford Mustang",
+            "defaultParameters": [
+                "RPM", "BOOST", "AFR", "OIL_TEMP", "TRANS_TEMP",
+                "KNOCK", "FUEL_PRESSURE", "TIMING_ADV"
+            ],
+            "safetyLimits": {
+                "maxRPM": 8000,
+                "maxBoost": 30,
+                "maxOilTemp": 280,
+                "maxTransTemp": 250
+            },
+            "loggingRates": {
+                "default": 100,
+                "dragStrip": 1000,
+                "dyno": 500
+            }
+        },
+        "bmw": {
+            "name": "BMW",
+            "defaultParameters": [
+                "RPM", "BOOST", "AFR", "OIL_TEMP", "VANOS",
+                "KNOCK", "FUEL_PRESSURE", "TIMING_ADV"
+            ],
+            "safetyLimits": {
+                "maxRPM": 7500,
+                "maxBoost": 25,
+                "maxOilTemp": 270,
+                "maxCoolantTemp": 230
+            },
+            "loggingRates": {
+                "default": 100,
+                "dragStrip": 1000,
+                "dyno": 500
+            }
+        },
+        "honda": {
+            "name": "Honda",
+            "defaultParameters": [
+                "RPM", "BOOST", "AFR", "OIL_TEMP", "VTEC",
+                "KNOCK", "FUEL_PRESSURE", "TIMING_ADV"
+            ],
+            "safetyLimits": {
+                "maxRPM": 9000,
+                "maxBoost": 28,
+                "maxOilTemp": 260,
+                "maxCoolantTemp": 220
+            },
+            "loggingRates": {
+                "default": 100,
+                "dragStrip": 1000,
+                "dyno": 500
+            }
+        },
+        "diesel": {
+            "name": "Diesel Trucks",
+            "defaultParameters": [
+                "RPM", "BOOST", "EGT", "TRANS_TEMP", "FUEL_RAIL",
+                "INJECTION_TIMING", "TORQUE", "BOOST_TARGET"
+            ],
+            "safetyLimits": {
+                "maxRPM": 4500,
+                "maxBoost": 65,
+                "maxEGT": 1500,
+                "maxTransTemp": 240
+            },
+            "loggingRates": {
+                "default": 100,
+                "dragStrip": 1000,
+                "dyno": 500
+            }
+        }
+    }
+}
